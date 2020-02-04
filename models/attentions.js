@@ -1,0 +1,21 @@
+var mongoose = require('mongoose');
+
+var AttentionSchema = new mongoose.Schema({
+    section: {type: mongoose.Schema.Types.ObjectId, ref: 'Section'},
+    bed: {
+        description: {type:String}
+    },
+    patient_name: {type: String, required: true},
+    patient_age: {type: Number, required: true},
+    medical_condition: {type: String, required: true},
+    service: {type: String, required: true},
+    in_timestamp: {type: Date, required: true},
+    out_timestamp: {type: Date},
+    pending_jobs:[
+        {
+            job: {type: mongoose.Schema.Types.ObjectId, ref: 'Job'}
+        }
+    ]
+});
+
+mongoose.model('Attention', AttentionSchema);
