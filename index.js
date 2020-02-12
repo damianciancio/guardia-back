@@ -3,6 +3,24 @@ var app = express();
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var passport = require('passport');
+var cors           = require('cors');
+var originsWitheList = [
+  "*"
+]
+var listEndpoints = require('express-list-endpoints');
+
+var corsOptions = {
+  origin: 
+    function(origin, callback){
+      if(typeof origin != 'undefined'){
+        console.log(origin);
+      }
+      var isWitheListed = originsWitheList.indexOf(origin) !== -1;
+      callback(null, isWitheListed);
+    },
+    credentials: true
+}
+app.use(cors(corsOptions));
 
 require('./models/users');
 require('./models/jobs');
