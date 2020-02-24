@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var AttentionSchema = new mongoose.Schema({
-    section: {type: mongoose.Schema.Types.ObjectId, ref: 'Section'},
+    section: {type: mongoose.Schema.Types.ObjectId, ref: 'Section', required: true},
     bed: {
         description: {type:String}
     },

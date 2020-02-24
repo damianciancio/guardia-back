@@ -7,7 +7,8 @@ var SectionSchema = new mongoose.Schema({
             type: String,
             required: true
         }
-    }]
+    }],
+    active: {type: Boolean, required: true}
 });
 
 mongoose.model('Section', SectionSchema);

@@ -8,7 +8,8 @@ router.post('/', function(req, res){
 
     let section = new Section({
         description: req.body.description,
-        beds: req.body.beds
+        beds: req.body.beds,
+        active: true
     });
 
     section.save();
