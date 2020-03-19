@@ -1,6 +1,7 @@
 var router = require('express').Router();
 var mongoose = require('mongoose');
 var Section = mongoose.model('Section');
+var Attention = mongoose.model('Attention');
 
 router.post('/', function(req, res){
 

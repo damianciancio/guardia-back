@@ -33,12 +33,42 @@ router.post('/', function(req, res){
 });
 
 router.get('/', function(req, res, next){
-    Attention.find({})
+
+    var filter = {};
+    if (req.query.hasOwnProperty('only_pending') && req.query.only_pending) {
+        filter = {'out_timestamp': null};
+    }
+
+    Attention.find(filter)
     .populate('section')
     .populate('pending_jobs.job')
+    .lean()
     .then(attentions => {
+
+        var sectionsCreatedIds = [];
+        var sections = [];
+
+        attentions.forEach(attention => {
+            if (!sectionsCreatedIds.includes(attention.section._id)) {
+                var section = Object.assign({},attention.section);
+                section.attentions = [];
+                sections.push(section);
+                sectionsCreatedIds.push(attention.section._id);
+            }
+
+            var foundSection = sections.find((section) => {
+                return section._id == attention.section._id;
+            });
+            if (foundSection) {
+                foundSection.attentions.push(attention);
+            }
+
+            console.log(sectionsCreatedIds);
+
+        });
+
         return res.json({
-            'attentions': attentions
+            'attentions': sections
         });
     })
     .catch(next);
