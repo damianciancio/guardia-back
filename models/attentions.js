@@ -13,7 +13,8 @@ var AttentionSchema = new mongoose.Schema({
     out_timestamp: {type: Date},
     pending_jobs:[
         {
-            job: {type: mongoose.Schema.Types.ObjectId, ref: 'Job'}
+            description: {type: String, required: true},
+            done: {type: Boolean, required: true}
         }
     ]
 });

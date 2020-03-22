@@ -6,7 +6,6 @@ var Job = mongoose.model('Job');
 
 router.post('/', function(req, res){
 
-    console.log(req.body);
     Section.findById(req.body.section_id)
     .then((section) => {
         if(!section) {
@@ -41,7 +40,6 @@ router.get('/', function(req, res, next){
 
     Attention.find(filter)
     .populate('section')
-    .populate('pending_jobs.job')
     .lean()
     .then(attentions => {
 
@@ -62,9 +60,6 @@ router.get('/', function(req, res, next){
             if (foundSection) {
                 foundSection.attentions.push(attention);
             }
-
-            console.log(sectionsCreatedIds);
-
         });
 
         return res.json({
@@ -74,7 +69,7 @@ router.get('/', function(req, res, next){
     .catch(next);
 });
 
-router.put('/pending-jobs/:id', function(req, res, next){
+router.put('/:id/pending-jobs', function(req, res, next){
     let attention_id = req.params.id;
 
     Attention.findById(attention_id)
@@ -82,22 +77,16 @@ router.put('/pending-jobs/:id', function(req, res, next){
         if(!attention){ 
             return res.sendStatus(404); 
         }
-        Job.findById(req.body.job_id)
-        .then(job => {
-            if(!job){ 
-                return res.sendStatus(404); 
-            }
             
-            attention.pending_jobs.push(
-                {
-                    'job': job
-                }
-            );
-    
-            attention.save();
-            res.send(attention);
-        })
-        .catch()
+        attention.pending_jobs.push(
+            {
+                description: req.body.job_description,
+                done: false
+            }
+        );
+
+        attention.save();
+        res.send(attention);
     })
     .catch(next);
 });
