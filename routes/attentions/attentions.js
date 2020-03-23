@@ -74,6 +74,7 @@ router.put('/:id/pending-jobs', function(req, res, next){
 
     Attention.findById(attention_id)
     .then(attention => {
+
         if(!attention){ 
             return res.sendStatus(404); 
         }
@@ -87,6 +88,7 @@ router.put('/:id/pending-jobs', function(req, res, next){
 
         attention.save();
         res.send(attention);
+
     })
     .catch(next);
 });
